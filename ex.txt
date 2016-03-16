@@ -1,0 +1,707 @@
+555555555555555555555555555555555555
+
+5.1 The Graphical Approach
+Problem Statement. Use the graphical approach to determine the mass of the bungee
+jumper with a drag coefficient of 0.25 kg/m to have a velocity of 36 m/s after 4 s of free
+fall. Note: The acceleration of gravity is 9.81 m/s^2 .
+Solution.
+The following MATLAB session sets up a plot of Eq. (5.2) versus mass:
+>> cd = 0.25; g = 9.81; v = 36; t = 4;
+>> mp = linspace(50,200);
+>> fp = sqrt(g*mp/cd).*tanh(sqrt(g*cd./mp)*t)-v;
+>> plot(mp,fp),grid
+
+5.2 Incremental Search
+Problem Statement. Use the M-file incsearch (Fig. 5.4) to identify brackets within the
+interval [3, 6] for the function:
+f (x) = sin(10x) + cos(3x)
+Solution. The MATLAB session using the default number of intervals (50) is
+>> incsearch(@(x) sin(10*x)+cos(3*x),3,6)
+
+5.3 The Bisection Method
+Problem Statement. Use bisection to solve the same problem approached graphically in
+Example 5.1.
+Solution. The first step in bisection is to guess two values of the unknown (in the present
+problem, m) that give values for f (m) with different signs. From the graphical solution in
+Example 5.1, we can see that the function changes sign between values of 50 and 200. The
+plot obviously suggests better initial guesses, say 140 and 150, but for illustrative purposes
+let’s assume we don’t have the benefit of the plot and have made conservative guesses.
+Therefore, the initial estimate of the root x r lies at the midpoint of the interval
+xr = (50 + 200)/2 = 125
+Note that the exact value of the root is 142.7376. This means that the value of 125 calcu-
+lated here has a true percent relative error of
+|εt| = | (142.7376−125)/142.7376 | × 100% = 12.43%
+Next we compute the product of the function value at the lower bound and at the midpoint:
+f (50) f (125) = −4.579(−0.409) = 1.871
+which is greater than zero, and hence no sign change occurs between the lower bound and
+the midpoint. Consequently, the root must be located in the upper interval between 125 and
+200. Therefore, we create a new interval by redefining the lower bound as 125.
+At this point, the new interval extends from x l = 125 to x u = 200. A revised root esti-
+mate can then be calculated as
+xr = (125+200)/2 = 162.5
+which represents a true percent error of |ε t | = 13.85%. The process can be repeated to ob-
+tain refined estimates. For example,
+f (125) f (162.5) = −0.409(0.359) = −0.147
+Therefore, the root is now in the lower interval between 125 and 162.5. The upper bound
+is redefined as 162.5, and the root estimate for the third iteration is calculated as
+xr = (125+162.5)/2 = 143.75
+which represents a percent relative error of ε t = 0.709%. The method can be repeated until
+the result is accurate enough to satisfy your needs.
+
+5.5 The False-Position Method
+Problem Statement. Use false position to solve the same problem approached graphi-
+cally and with bisection in Examples 5.1 and 5.3.
+Solution. As in Example 5.3, initiate the computation with guesses of x l = 50 and
+x u = 200.
+First iteration:
+x l = 50	f (x l ) = −4.579387
+x u = 200	f (x u ) = 0.860291
+x r = 200 − (0.860291(50 − 200)/(−4.579387 − 0.860291))= 176.2773
+which has a true relative error of 23.5%.
+Second iteration:
+f (x l ) f (x r ) = −2.592732
+Therefore, the root lies in the first subinterval, and x r becomes the upper limit for the next
+iteration, x u = 176.2773.
+x l = 50	f (x l ) = −4.579387
+x u = 176.2773	f (x u ) = 0.566174
+x r = 176.2773 − (0.566174(50 − 176.2773)/(−4.579387 − 0.566174))= 162.3828
+which has true and approximate relative errors of 13.76% and 8.56%, respectively. Addi-
+tional iterations can be performed to refine the estimates of the root.
+
+6666666666666666666666666666666666666
+
+6.1 Simple Fixed-Point Iteration
+Problem Statement. Use simple fixed-point iteration to locate the root of f (x) = e^−x − x.
+Solution. The function can be separated directly and expressed in the form of Eq. (6.2) as
+x i+1 = e^(−x i)
+Starting with an initial guess of x 0 = 0, this iterative equation can be applied to compute:
+i	x i	|ε a| r %	|ε t| r %	|ε t| i / |ε t| i−1
+Thus, each iteration brings the estimate closer to the true value of the root: 0.56714329.
+
+x i+1 = x i − f(x i)/f'(x i)
+6.2 Newton-Raphson Method
+Problem Statement. Use the Newton-Raphson method to estimate the root of f (x) =
+e^−x − x employing an initial guess of x 0 = 0.
+Solution. The first derivative of the function can be evaluated as
+f'(x) = −e^−x − 1
+which can be substituted along with the original function into Eq. (6.6) to give
+x i+1 = x i − (e^(−x i) − x i)/(−e^(−x i) − 1)
+Starting with an initial guess of x 0 = 0, this iterative equation can be applied to compute
+i 	x i 	|ε t| r %
+Thus, the approach rapidly converges on the true root. Notice that the true percent relative
+error at each iteration decreases much faster than it does in simple fixed-point iteration
+(compare with Example 6.1).
+
+x i+1 = x i − (δ x i f(x i))/(f(x i + δ x i) − f(x i))
+6.5 Modified Secant Method
+Problem Statement. Use the modified secant method to determine the mass of the
+bungee jumper with a drag coefficient of 0.25 kg/m to have a velocity of 36 m/s after 4 s of
+free fall. Note: The acceleration of gravity is 9.81 m/s^2 . Use an initial guess of 50 kg and a
+value of 10^−6 for the perturbation fraction.
+Solution. Inserting the parameters into Eq. (6.9) yields
+First iteration:
+x 0 = 50		f (x 0 ) = −4.57938708
+x 0 + δ x 0 = 50.00005		f (x 0 + δx 0 ) = −4.579381118
+x 1 = 50 − (10^−6 (50)(−4.57938708))/(−4.579381118 − (−4.57938708))
+= 88.39931 (|ε t| = 38.1%; |ε a| = 43.4%)
+Second iteration:
+x 1 = 88.39931		f (x 1 ) = −1.69220771
+x 1 + δ x 1 = 88.39940		f (x 1 + δ x 1 ) = −1.692203516
+x 2 = 88.39931 − (10^−6 (88.39931)(−1.69220771))/(−1.692203516 − (−1.69220771))
+= 124.08970 (|ε t | = 13.1%; |ε a | = 28.76%)
+The calculation can be continued to yield
+i 	x i 	|ε t| r %	|ε a| r %
+
+6.6 Inverse Quadratic Interpolation
+Problem Statement. Develop quadratic equations in both x and y for the data points
+depicted in Fig. 6.9: (1, 2), (2, 1), and (4, 5). For the first, y = f(x), employ the quadratic
+formula to illustrate that the roots are complex. For the latter, x = g(y), use inverse qua-
+dratic interpolation (Eq. 6.11) to determine the root estimate.
+Solution. By reversing the x’s and y’s, Eq. (6.10) can be used to generate a quadratic in x
+as
+f (x) = ((x − 2)(x − 4)/(1 − 2)(1 − 4))*2 + ((x − 1)(x − 4)/(2 − 1)(2 − 4))*1 + ((x − 1)(x − 2)/(4 − 1)(4 − 2))*5
+or collecting terms
+f (x) = x^2 − 4x + 5
+This equation was used to generate the parabola, y = f(x), in Fig. 6.9. The quadratic for-
+mula can be used to determine that the roots for this case are complex,
+x = (4 ± sqrt((−4) 2 − 4(1)(5)))/2 = 2 ± i
+Equation (6.10) can be used to generate the quadratic in y as
+g(y) = (((y − 1)(y − 5))/(2 − 1)(2 − 5))*1 + (((y − 2)(y − 5))/(1 − 2)(1 − 5))*2 + (((y − 2)(y − 1))/(5 − 2)(5 − 1))*4
+or collecting terms:
+g(y) = 0.5x^2 − 2.5x + 4
+Finally, Eq. (6.11) can be used to determine the root as
+x i+1 = (−1(−5)/(2 − 1)(2 − 5))*1 + (−2(−5)/(1 − 2)(1 − 5))*2 + (−2(−1)/(5 − 2)(5 − 1))*4 = 4
+
+6.7 The fzero and optimset Functions
+Problem Statement. Recall that in Example 6.3, we found the positive root of f (x) =
+x^10 − 1 using the Newton-Raphson method with an initial guess of 0.5. Solve the same
+problem with optimset and fzero .
+Solution. An interactive MATLAB session can be implemented as follows:
+>> options = optimset('display','iter');
+>> [x,fx] = fzero(@(x) x^10-1,0.5,options)
+Thus, after 25 iterations of searching, fzero finds a sign change. It then uses interpo-
+lation and bisection until it gets close enough to the root so that interpolation takes over and
+rapidly converges on the root.
+Suppose that we would like to use a less stringent tolerance. We can use the optimset
+function to set a low maximum tolerance and a less accurate estimate of the root results:
+>> options = optimset ('tolx', 1e-3);
+>> [x,fx] = fzero(@(x) x^10-1,0.5,options)
+
+6.8 Using MATLAB to Manipulate Polynomials and Determine Their Roots
+Problem Statement. Use the following equation to explore how MATLAB can be em-
+ployed to manipulate polynomials:
+f 5 (x) = x^5 − 3.5x^4 + 2.75x^3 + 2.125x^2 − 3.875x + 1.25
+Note that this polynomial has three real roots: 0.5, −1.0, and 2; and one pair of complex
+roots: 1 ± 0.5i.
+Solution. Polynomials are entered into MATLAB by storing the coefficients as a row
+vector. For example, entering the following line stores the coefficients in the vector a :
+>> a = [1 -3.5 2.75 2.125 -3.875 1.25];
+We can then proceed to manipulate the polynomial. For example we can evaluate it at
+x = 1, by typing
+>> polyval(a,1)
+with the result, 1(1)^5 − 3.5(1)^4 + 2.75(1)^3 + 2.125(1)^2 − 3.875(1) + 1.25 = −0.25:
+ans = -0.2500
+We can create a quadratic polynomial that has roots corresponding to two of the
+original roots of Eq. (E6.8.1): 0.5 and −1. This quadratic is (x − 0.5)(x + 1) = x^2 +
+0.5x − 0.5. It can be entered into MATLAB as the vector b :
+>> b = [1 .5 -.5]
+Note that the poly function can be used to perform the same task as in
+>> b = poly([0.5 -1])
+We can divide this polynomial into the original polynomial by
+>> [q,r] = deconv(a,b)
+with the result being a quotient (a third-order polynomial, q ) and a remainder ( r )
+q = 1.0000 -4.0000 5.2500 -2.5000
+r = 0 0 0 0 0 0
+Because the polynomial is a perfect divisor, the remainder polynomial has zero coeffi-
+cients. Now, the roots of the quotient polynomial can be determined as
+>> x = roots(q)
+with the expected result that the remaining roots of the original polynomial Eq. (E6.8.1) are
+found:
+x =
+2.0000
+1.0000 + 0.5000i
+1.0000 - 0.5000i
+We can now multiply q by b to come up with the original polynomial:
+>> a = conv(q,b)
+We can then determine all the roots of the original polynomial by
+>> x = roots(a)
+Finally, we can return to the original polynomial again by using the poly function:
+>> a = poly(x)
+
+7777777777777777777777777777777777777
+
+7.1 Determining the Optimum Analytically by Root Location
+Problem Statement. Determine the time and magnitude of the peak elevation based on
+Eq. (7.1). Use the following parameter values for your calculation: g = 9.81 m/s^2 ,
+z 0 = 100 m, v 0 = 55 m/s, m = 80 kg, and c = 15 kg/s.
+Solution. Equation (7.1) can be differentiated to give
+dz/dt = v 0 e^−(c/m)t − (mg/c)(1 − e^−(c/m)t)
+Note that because v = dz/dt , this is actually the equation for the velocity. The maximum
+elevation occurs at the value of t that drives this equation to zero. Thus, the problem
+amounts to determining the root. For this case, this can be accomplished by setting the de-
+rivative to zero and solving Eq. (E7.1.1) analytically for
+t = m/c ln(1+c v 0/mg)
+Substituting the parameters gives
+t = 80/15 ln(1 + 15(55)/80(9.81)) = 3.83166 s
+This value along with the parameters can then be substituted into Eq. (7.1) to compute the
+maximum elevation as
+z = 100 + 80/15 (50 + 80(9.81)/15) (1 − e^−(15/80)3.83166) − 80(9.81)/15 (3.83166) = 192.8609 m
+We can verify that the result is a maximum by differentiating Eq. (E7.1.1) to obtain the
+second derivative
+d^2 z/dt^2 = − c/m v 0 e^−(c/m)t − ge^−(c/m)t = −9.81 m/s^2
+The fact that the second derivative is negative tells us that we have a maximum. Further,
+the result makes physical sense since the acceleration should be solely equal to the force of
+gravity at the maximum when the vertical velocity (and hence drag) is zero.
+Although an analytical solution was possible for this case, we could have obtained the
+same result using the root-location methods described in Chaps. 5 and 6. This will be left
+as a homework exercise.
+
+7.2 Golden-Section Search
+Problem Statement. Use the golden-section search to find the minimum of
+f (x) = x^2/10 − 2 sin x
+within the interval from x[l] = 0 to x[u] = 4.
+Solution. First, the golden ratio is used to create the two interior points:
+d = 0.61803(4 − 0) = 2.4721
+x[1] = 0 + 2.4721 = 2.4721
+x[2] = 4 − 2.4721 = 1.5279
+The function can be evaluated at the interior points:
+f(x[2]) = 1.5279^2/10 − 2 sin(1.5279) = −1.7647
+f(x[1]) = 2.4721^2/10 − 2 sin(2.4721) = −0.6300
+Because f(x[2]) < f(x[1]), our best estimate of the minimum at this point is that it is
+located at x = 1.5279 with a value of f(x) = –1.7647. In addition, we also know that the
+minimum is in the interval defined by x[l], x[2], and x[1]. Thus, for the next iteration, the lower
+bound remains x l = 0, and x 1 becomes the upper bound, that is, x u = 2.4721. In addition,
+the former x 2 value becomes the new x 1 , that is, x 1 = 1.5279. In addition, we do not have to
+recalculate f (x 1 ), it was determined on the previous iteration as f (1.5279) = –1.7647.
+All that remains is to use Eqs. (7.8) and (7.7) to compute the new value of d and x 2 :
+d = 0.61803(2.4721 − 0) = 1.5279
+x[2] = 2.4721 − 1.5279 = 0.9443
+The function evaluation at x 2 is f (0.9943) = −1.5310. Since this value is less than the
+function value at x 1 , the minimum is f (1.5279) = −1.7647, and it is in the interval pre-
+scribed by x 2 , x 1 , and x u . The process can be repeated, with the results tabulated here:
+Note that the current minimum is highlighted for every iteration. After the eighth
+iteration, the minimum occurs at x = 1.4427 with a function value of −1.7755. Thus, the
+i 	x l 	f (x l ) 	x 2 	f (x 2 ) 	x 1 	f (x 1 ) 	x u 	f (x u ) 	d
+result is converging on the true value of −1.7757 at x = 1.4276.
+
+7.3 Parabolic Interpolation
+Problem Statement. Use parabolic interpolation to approximate the minimum of
+f (x) = x^2/10 − 2 sin x
+with initial guesses of x 1 = 0, x 2 = 1, and x 3 = 4.
+Solution. The function values at the three guesses can be evaluated:
+x 1 = 0		f (x 1 ) = 0
+x 2 = 1		f (x 2 ) = −1.5829
+x 3 = 4		f (x 3 ) = 3.1136
+and substituted into Eq. (7.10) to give
+x 4 = 1 − (1/2 * ((1 − 0)^2 [−1.5829 − 3.1136] − (1 − 4)^2 [−1.5829 − 0])/((1 − 0) [−1.5829 − 3.1136] − (1 − 4) [−1.5829 − 0]) = 1.5055
+which has a function value of f(1.5055) = −1.7691.
+Next, a strategy similar to the golden-section search can be employed to determine
+which point should be discarded. Because the function value for the new point is lower
+than for the intermediate point (x 2 ) and the new x value is to the right of the intermediate
+point, the lower guess (x 1 ) is discarded. Therefore, for the next iteration:
+x 1 = 1			f(x 1 ) = −1.5829
+x 2 = 1.5055	f(x 2 ) = −1.7691
+x 3 = 4			f(x 3 ) = 3.1136
+which can be substituted into Eq. (7.10) to give
+x 4 = 1.5055 − 1/2 ((1.5055 − 1)^2 [−1.7691 − 3.1136] − (1.5055 − 4)^2 [−1.7691 − (−1.5829)])/((1.5055 − 1) [−1.7691 − 3.1136] − (1.5055 − 4) [−1.7691 − (−1.5829)])
+= 1.4903
+which has a function value of f(1.4903) = −1.7714. The process can be repeated, with the
+results tabulated here:
+i 	x 1 	f (x 1 ) 	x 2 	f (x 2 ) 	x 3 	f (x 3 ) 	x 4 	f (x 4 )
+Thus, within five iterations, the result is converging rapidly on the true value of −1.7757
+at x = 1.4276.
+
+7.4 Visualizing a Two-Dimensional Function
+Problem Statement. Use MATLAB’s graphical capabilities to display the following
+function and visually estimate its minimum in the range –2 ≤ x 1 ≤ 0 and 0 ≤ x 2 ≤ 3:
+f (x 1 , x 2 ) = 2 + x 1 − x 2 + 2x^2 1 + 2x 1 x 2 + x^2 2
+Solution. The following script generates contour and mesh plots of the function:
+x=linspace(-2,0,40);y=linspace(0,3,40);
+[X,Y] = meshgrid(x,y);
+Z=2+X-Y+2*X.^2+2*X.*Y+Y.^2;
+subplot(1,2,1);
+cs=contour(X,Y,Z);clabel(cs);
+xlabel('x_1');ylabel('x_2');
+title('(a) Contour plot');grid;
+subplot(1,2,2);
+cs=surfc(X,Y,Z);
+zmin=floor(min(Z));
+zmax=ceil(max(Z));
+xlabel('x_1');ylabel('x_2');zlabel('f(x_1,x_2)');
+title('(b) Mesh plot');
+As displayed in Fig. 7.9, both plots indicate that function has a minimum value of about
+f(x 1 , x 2 ) = 0 to 1 located at about x 1 = −1 and x 2 = 1.5.
+
+9999999999999999999999999999999999999
+
+9.1 Determinants
+Problem Statement. Compute values for the determinants of the systems represented in
+Figs. 9.1 and 9.2.
+Solution. For Fig. 9.1:
+D = |[3 2; −1 2]| = 3(2) − 2(−1) = 8
+For Fig. 9.2a:
+D = |[−1/2 1; -1/2 1]| = −(1/2)(1) − (-1/2) = 0
+For Fig. 9.2b:
+D = |[−1/2 1; −1 2]| = −(1/2)(2) − 1(−1) = 0
+For Fig. 9.2c:
+D = |[−1/2 1; −2.3/5 1]| = −(1/2)(1) − 1(−2.3/5) = −0.04
+
+9.2 Cramer’s Rule
+Problem Statement. Use Cramer’s rule to solve
+0.3x 1 + 0.52x 2 + x 3 = −0.01
+0.5x 1 + x 2 + 1.9x 3 = 0.67
+0.1x 1 + 0.3 x 2 + 0.5x 3 = −0.44
+Solution. The determinant D can be evaluated as [Eq. (9.1)]:
+D = 0.3|[1 1.9; 0.3 0.5]| − 0.52|[0.5 1.9; 0.1 0.5]| + 1|[0.5 1; 0.1 0.3]| = −0.0022
+The solution can be calculated as
+x 1 = |[−0.01 0.52 1; 0.67 1 1.9; −0.44 0.3 0.5]| / −0.0022 = 0.03278/−0.0022 = −14.9
+x 2 = |[0.3 −0.01 1; 0.5 0.67 1.9; 0.1 −0.44 0.5]| / −0.0022 = 0.0649/−0.0022 = −29.5
+x 3 = |[0.3 0.52 −0.01; 0.5 1 0.67; 0.1 0.3 −0.44]| / −0.0022 = −0.04356/−0.0022 = 19.8
+
+9.3 Naive Gauss Elimination
+Problem Statement. Use Gauss elimination to solve
+3x 1 − 0.1x 2 − 0.2x 3 = 7.85
+0.1x 1 + 7x 2 − 0.3x 3 = −19.3
+0.3x 1 − 0.2x 2 + 10x 3 = 71.4
+Solution. The first part of the procedure is forward elimination. Multiply Eq. (E9.3.1)
+by 0.1/3 and subtract the result from Eq. (E9.3.2) to give
+7.00333x 2 − 0.293333x 3 = −19.5617
+Then multiply Eq. (E9.3.1) by 0.3/3 and subtract it from Eq. (E9.3.3). After these opera-
+tions, the set of equations is
+3x 1 − 0.1x 2 − 0.2x 3 = 7.85
+7.00333x 2 − 0.293333x 3 = −19.5617
+− 0.190000x 2 + 10.0200x 3 = 70.6150
+To complete the forward elimination, x 2 must be removed from Eq. (E9.3.6). To accom-
+plish this, multiply Eq. (E9.3.5) by −0.190000/7.00333 and subtract the result from
+Eq. (E9.3.6). This eliminates x 2 from the third equation and reduces the system to an upper
+triangular form, as in
+3x 1 − 0.1x 2 − 0.2x 3 = 7.85
+7.00333x 2 − 0.293333x 3 = −19.5617
+10.0120x 3 = 70.0843
+We can now solve these equations by back substitution. First, Eq. (E9.3.9) can be
+solved for
+x 3 = 70.0843/10.0120 = 7.00003
+This result can be back-substituted into Eq. (E9.3.8), which can then be solved for
+x 2 = (−19.5617 + 0.293333(7.00003))/7.00333 = −2.50000
+Finally, x 3 = 7.00003 and x 2 = −2.50000 can be substituted back into Eq. (E9.3.7), which
+can be solved for
+x 1 = (7.85 + 0.1(−2.50000) + 0.2(7.00003))/3 = 3.00000
+Although there is a slight round-off error, the results are very close to the exact solution of
+x 1 = 3, x 2 = −2.5, and x 3 = 7. This can be verified by substituting the results into the
+original equation set:
+3(3) − 0.1(−2.5) − 0.2(7.00003) = 7.84999 ∼= 7.85
+0.1(3) + 7(−2.5) − 0.3(7.00003) = −19.30000 = −19.3
+0.3(3) − 0.2(−2.5) + 10(7.00003) = 71.4003 ∼= 71.4
+
+9.4 Partial Pivoting
+Problem Statement. Use Gauss elimination to solve
+0.0003x 1 + 3.0000x 2 = 2.0001
+1.0000x 1 + 1.0000x 2 = 1.0000
+Note that in this form the first pivot element, a 11 = 0.0003, is very close to zero. Then re-
+peat the computation, but partial pivot by reversing the order of the equations. The exact
+solution is x 1 = 1/3 and x 2 = 2/3.
+Solution. Multiplying the first equation by 1/(0.0003) yields
+x 1 + 10,000x 2 = 6667
+which can be used to eliminate x 1 from the second equation:
+−9999x 2 = −6666
+which can be solved for x 2 = 2/3. This result can be substituted back into the first equation
+to evaluate x 1 :
+x 1 = (2.0001 − 3(2/3))/0.0003
+Due to subtractive cancellation, the result is very sensitive to the number of significant
+figures carried in the computation:
+Significant Figures 	x 2 	x 1 	Absolute Value of Percent Relative Error for x 1
+Note how the solution for x 1 is highly dependent on the number of significant figures. This
+is because in Eq. (E9.4.1), we are subtracting two almost-equal numbers.
+On the other hand, if the equations are solved in reverse order, the row with the larger
+pivot element is normalized. The equations are
+1.0000x 1 + 1.0000x 2 = 1.0000
+0.0003x 1 + 3.0000x 2 = 2.0001
+Elimination and substitution again yields x 2 = 2/3. For different numbers of significant
+figures, x 1 can be computed from the first equation, as in
+x 1 = (1 − (2/3))/1
+This case is much less sensitive to the number of significant figures in the computation:
+Significant Figures 	x 2 	x 1 	Absolute Value of Percent Relative Error for x 1
+Thus, a pivot strategy is much more satisfactory.
+
+9.5 Solution of a Tridiagonal System
+Problem Statement. Solve the following tridiagonal system:
+[2.04 −1 0 0; −1 2.04 −1 0; 0 −1 2.04 −1; 0 0 −1 2.04] [x1; x2; x3; x4] = [40.8; 0.8; 0.8; 200.8]
+Solution. As with Gauss elimination, the first step involves transforming the matrix to
+upper triangular form. This is done by multiplying the first equation by the factor e 2 / f 1 and
+subtracting the result from the second equation. This creates a zero in place of e 2 and trans-
+forms the other coefficients to new values,
+f 2 = f 2 − (e 2/f 1)g 1 = 2.04 − (−1/2.04)(−1) = 1.550
+r 2 = r 2 − (e 2/f 1)r 1 = 0.8 − (−1/2.04)(40.8) = 20.8
+Notice that g 2 is unmodified because the element above it in the first row is zero.
+After performing a similar calculation for the third and fourth rows, the system is trans-
+formed to the upper triangular form
+[2.04 −1 0 0; 0 1.550 −1 0; 0 0 1.395 −1; 0 0 0 1.323] [x1; x2; x3; x4] = [40.8; 20.8; 14.221; 210.996]
+x 4 = r 4/f 4 = 210.996/1.323 = 159.480
+x 3 = (r 3 − g 3 x 4)/f 3 = (14.221 − (−1)159.480)/1.395 = 124.538
+x 2 = (r 2 − g 2 x 3)/f 2 = (20.800 − (−1)124.538)/1.550 = 93.778
+x 1 = (r 1 − g 1 x 2)/f 1 = (40.800 − (−1)93.778)/2.040 = 65.970
+
+0000000000000000000000000000000000000
+
+10.1 LU Factorization with Gauss Elimination
+Problem Statement. Derive an LU factorization based on the Gauss elimination per-
+formed previously in Example 9.3.
+Solution. In Example 9.3, we used Gauss elimination to solve a set of linear algebraic
+equations that had the following coefficient matrix:
+[A] = [3 −0.1 −0.2; 0.1 7 −0.3; 0.3 −0.2 10]
+After forward elimination, the following upper triangular matrix was obtained:
+[U] = [3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120]
+The factors employed to obtain the upper triangular matrix can be assembled into a lower
+triangular matrix. The elements a[2][1] and a[3][1] were eliminated by using the factors
+f[2][1] = 0.1/3 = 0.0333333		f[3][1] = 0.3/3 = 0.1000000
+and the element a 32 was eliminated by using the factor
+f[3][2] = −0.19/7.00333 = −0.0271300
+Thus, the lower triangular matrix is
+[L] = [1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1]
+Consequently, the LU factorization is
+[A] = [L][U] = [1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1] [3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120]
+This result can be verified by performing the multiplication of [L][U] to give
+[L][U] = [3 −0.1 −0.2; 0.0999999 7 −0.3; 0.3 −0.2 9.99996]
+where the minor discrepancies are due to roundoff.
+
+10.2 The Substitution Steps
+Problem Statement. Complete the problem initiated in Example 10.1 by generating the
+final solution with forward and back substitution.
+Solution. As just stated, the intent of forward substitution is to impose the elimination
+manipulations that we had formerly applied to [A] on the right-hand-side vector {b}. Recall
+that the system being solved is
+[3 −0.1 −0.2; 0.1 7 −0.3; 0.3 −0.2 10] [x[1]; x[2]; x[3]] = [7.85; −19.3; 71.4]
+and that the forward-elimination phase of conventional Gauss elimination resulted in
+[3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120] [x[1]; x[2]; x[3]] = [7.85; −19.5617; 70.0843]
+The forward-substitution phase is implemented by applying Eq. (10.8):
+[1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1] [d[1]; d[2]; d[3]] = [7.85; −19.3; 71.4]
+or multiplying out the left-hand side:
+d[1] = 7.85
+0.0333333 d[1] + d[2] = −19.3
+0.100000 d[1] − 0.0271300 d[2] + d[3] = 71.4
+We can solve the first equation for d[1] = 7.85, which can be substituted into the second
+equation to solve for
+d[2] = −19.3 − 0.0333333(7.85) = −19.5617
+Both d[1] and d[2] can be substituted into the third equation to give
+d[3] = 71.4 − 0.1(7.85) + 0.02713(−19.5617) = 70.0843
+Thus,
+{d} = [7.85; −19.5617; 70.0843]
+This result can then be substituted into Eq. (10.3), [U]{x} = {d}:
+[3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120] [x[1]; x[2]; x[3]] = [7.85; −19.5617; 70.0843]
+which can be solved by back substitution (see Example 9.3 for details) for the final solution:
+{x} = [3; −2.5; 7.00003]
+
+10.3 LU Factorization with Pivoting
+Problem Statement. Compute the LU factorization and find the solution for the same
+system analyzed in Example 9.4
+[0.0003 3.0000; 1.0000 1.0000] [x 1; x 2] = [2.0001; 1.0000]
+Solution. Before elimination, we set up the initial permutation matrix:
+[P] = [1.0000 0.0000; 0.0000 1.0000]
+We immediately see that pivoting is necessary, so prior to elimination we switch the rows:
+[A] = [1.0000 1.0000; 0.0003 3.0000]
+At the same time, we keep track of the pivot by switching the rows of the permutation
+matrix:
+[P] = [0.0000 1.0000; 1.0000 0.0000]
+We then eliminate a 21 by subtracting the factor l 21 = a 21/a 11 = 0.0003/1 = 0.0003 from the
+second row of A. In so doing, we compute that the new value of a'22 = 3 - 0.0003(1) =
+2.9997. Thus, the elimination step is complete with the result:
+[U ] = [1 1; 0 2.9997]		[L] = [1 0; 0.0003 1]
+Before implementing forward substitution, the permutation matrix is used to reorder
+the right-hand-side vector to reflect the pivots as in
+[P]{b} = [0.0000 1.0000; 1.0000 0.0000] [2.0001; 1] = [1; 2.0001]
+Then, forward substitution is applied as in
+[1 0; 0.0003 1] [d 1; d 2] = [1; 2.0001]
+which can be solved for d 1 = 1 and d 2 = 2.0001 − 0.0003(1) = 1.9998. At this point, the
+system is
+[1 1; 0 2.9997] [x 1; x 2] = [1; 1.9998]
+Applying back substitution gives the final result:
+x 2 = 1.9998/2.9997 = 0.66667
+x 1 = (1 − 1(0.66667))/1 = 0.33333
+
+10.4 LU Factorization with MATLAB
+Problem Statement. Use MATLAB to compute the LU factorization and find the
+solution for the same linear system analyzed in Examples 10.1 and 10.2:
+[3 −0.1 −0.2; 0.1 7 −0.3; 0.3 −0.2 10] [x 1; x 2; x 3] = [7.85; −19.3; 71.4]
+Solution. The coefficient matrix and the right-hand-side vector can be entered in stan-
+dard fashion as
+>> A = [3 -.1 -.2;.1 7 -.3;.3 -.2 10];
+>> b = [7.85; -19.3; 71.4];
+Next, the LU factorization can be computed with
+>> [L,U] = lu(A)
+This is the same result that we obtained by hand in Example 10.1. We can test that it is cor-
+rect by computing the original matrix as
+>> L*U
+To generate the solution, we first compute
+>> d = L\b
+And then use this result to compute the solution
+>> x = U\d
+These results conform to those obtained by hand in Example 10.2.
+
+u ii = √ (a ii − sum(1, i-1, @(k) u^2 ki))
+u ij = (a ij − sum(1, i-1, @(k) u ki u kj)) / u ii
+10.5 Cholesky Factorization
+Problem Statement. Compute the Cholesky factorization for the symmetric matrix
+[A] = [6 15 55; 15 55 225; 55 225 979]
+Solution. For the first row (i = 1), Eq. (10.15) is employed to compute
+u 11 = √ a 11 = √6 = 2.44949
+Then, Eq. (10.16) can be used to determine
+u 12 = a 12 / u 11 = 15/2.44949 = 6.123724
+u 13 = a 13 / u 11 = 55/2.44949 = 22.45366
+For the second row (i = 2):
+u 22 = √(a 22 − u^2 12) = √((55 − (6.123724))^2) = 4.1833
+u 23 = (a 23 − u 12 u 13)/u 22 = (225 − 6.123724(22.45366))/4.1833 = 20.9165
+For the third row (i = 3):
+u 33 = √(a 33 − u^2 13 − u^2 23) = √(979 − (22.45366)^2 − (20.9165)^2) = 6.110101
+Thus, the Cholesky factorization yields
+[U ] = [2.44949 6.123724 22.45366; 0 4.1833 20.9165; 0 0 6.110101]
+The validity of this factorization can be verified by substituting it and its transpose
+into Eq. (10.14) to see if their product yields the original matrix [A]. This is left for an
+exercise.
+
+10.6 Cholesky Factorization with MATLAB
+Problem Statement. Use MATLAB to compute the Cholesky factorization for the same
+matrix we analyzed in Example 10.5.
+[A] = [6 15 55; 15 55 225; 55 225 979]
+Also obtain a solution for a right-hand-side vector that is the sum of the rows of [A]. Note
+that for this case, the answer will be a vector of ones.
+Solution. The matrix is entered in standard fashion as
+>> A = [6 15 55; 15 55 225; 55 225 979];
+A right-hand-side vector that is the sum of the rows of [A] can be generated as
+>> b = [sum(A(1,:)); sum(A(2,:)); sum(A(3,:))]
+Next, the Cholesky factorization can be computed with
+>> U = chol(A)
+We can test that this is correct by computing the original matrix as
+>> U'*U
+To generate the solution, we first compute
+>> d = U'\b
+And then use this result to compute the solution
+>> x = U\d
+
+1111111111111111111111111111111111111
+
+11.1 Matrix Inversion
+Problem Statement. Employ LU factorization to determine the matrix inverse for the
+system from Example 10.1:
+[A] = [3 −0.1 −0.2; 0.1 7 −0.3; 0.3 −0.2 10]
+Recall that the factorization resulted in the following lower and upper triangular matrices:
+[U ] = [3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120]		[L] = [1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1]
+Solution. The first column of the matrix inverse can be determined by performing the
+forward-substitution solution procedure with a unit vector (with 1 in the first row) as the
+right-hand-side vector. Thus, the lower triangular system can be set up as (recall Eq. [10.8])
+[1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1] [d 1; d 2; d 3] = [1; 0; 0]
+and solved with forward substitution for {d} T = 1 −0.03333 −0.1009 . This vector
+can then be used as the right-hand side of the upper triangular system (recall Eq. [10.3]):
+[3 −0.1 −0.2; 0 7.00333 −0.293333; 0 0 10.0120] [x 1; x 2; x 3] = [1; −0.03333; −0.1009]
+which can be solved by back substitution for {x} T = 0.33249 −0.00518 −0.01008 ,
+which is the first column of the matrix inverse:
+[A]^−1 = [0.33249 0 0; −0.00518 0 0; −0.01008 0 0]
+To determine the second column, Eq. (10.8) is formulated as
+[1 0 0; 0.0333333 1 0; 0.100000 −0.0271300 1] [d 1; d 2; d 3] = [0; 1; 0]
+This can be solved for {d}, and the results are used with Eq. (10.3) to determine {x} T =
+0.004944 0.142903 0.00271 , which is the second column of the matrix inverse:
+[A]^−1 = [0.33249 0.004944 0],[−0.00518 0.142903 0],[−0.01008 0.002710 0]
+Finally, the same procedures can be implemented with {b} T = 0 0 1 to solve for
+{x} T = 0.006798 0.004183 0.09988 , which is the final column of the matrix inverse:
+[A]^−1 = [0.33249 0.004944 0.006798],[−0.00518 0.142903 0.004183],[−0.01008 0.002710 0.099880]
+The validity of this result can be checked by verifying that [A][A] −1 = [I ].
+
+11.4 Matrix Condition Evaluation with MATLAB
+Problem Statement. Use MATLAB to evaluate both the norms and condition numbers
+for the scaled Hilbert matrix previously analyzed in Example 11.3:
+[A] = [1 1/2 1/3; 1 2/3 1/2; 1 3/4 3/5]
+(a) As in Example 11.3, first compute the row-sum versions ( p = inf ). (b) Also compute
+the Frobenius ( p = 'fro' ) and the spectral ( p = 2) condition numbers.
+Solution: (a) First, enter the matrix:
+>> A = [1 1/2 1/3;1 2/3 1/2;1 3/4 3/5];
+Then, the row-sum norm and condition number can be computed as
+>> norm(A,inf)
+>> cond(A,inf)
+These results correspond to those that were calculated by hand in Example 11.3.
+(b) The condition numbers based on the Frobenius and spectral norms are
+>> cond(A,'fro')
+>> cond(A)
+
+2222222222222222222222222222222222222
+
+12.1 Gauss-Seidel Method
+Problem Statement. Use the Gauss-Seidel method to obtain the solution for
+3x 1 − 0.1x 2 − 0.2x 3 = 7.85
+0.1x 1 + 7x 2 − 0.3x 3 = −19.3
+0.3x 1 − 0.2x 2 + 10x 3 = 71.4
+Note that the solution is x 1 = 3, x 2 = −2.5, and x 3 = 7.
+Solution. First, solve each of the equations for its unknown on the diagonal:
+x 1 = (7.85 + 0.1x 2 + 0.2x 3)/3
+x 2 = (−19.3 − 0.1x 1 + 0.3x 3)/7
+x 3 = (71.4 − 0.3x 1 + 0.2x 2)/10
+By assuming that x 2 and x 3 are zero, Eq. (E12.1.1) can be used to compute
+x 1 = (7.85 + 0.1(0) + 0.2(0))/3 = 2.616667
+This value, along with the assumed value of x 3 = 0, can be substituted into Eq. (E12.1.2)
+to calculate
+x 2 = (−19.3 − 0.1(2.616667) + 0.3(0))/7 = −2.794524
+The first iteration is completed by substituting the calculated values for x 1 and x 2 into
+Eq. (E12.1.3) to yield
+x 3 = (71.4 − 0.3(2.616667) + 0.2(−2.794524))/10 = 7.005610
+For the second iteration, the same process is repeated to compute
+x 1 = (7.85 + 0.1(−2.794524) + 0.2(7.005610))/3 = 2.990557
+x 2 = (−19.3 − 0.1(2.990557) + 0.3(7.005610))/7 = −2.499625
+x 3 = (71.4 − 0.3(2.990557) + 0.2(−2.499625))/10 = 7.000291
+The method is, therefore, converging on the true solution. Additional iterations could be
+applied to improve the answers. However, in an actual problem, we would not know the
+true answer a priori. Consequently, Eq. (12.2) provides a means to estimate the error. For
+example, for x 1 :
+ε a,1 = | (2.990557 − 2.616667)/2.990557 | × 100% = 12.5%
+For x 2 and x 3 , the error estimates are ε a,2 = 11.8% and ε a,3 = 0.076%. Note that, as was
+the case when determining roots of a single equation, formulations such as Eq. (12.2) usu-
+ally provide a conservative appraisal of convergence. Thus, when they are met, they ensure
+that the result is known to at least the tolerance specified by ε s .
+
+x i new = λ x i new + (1 − λ) x i old
+12.2 Gauss-Seidel Method with Relaxation
+Problem Statement. Solve the following system with Gauss-Seidel using overrelaxation
+(λ = 1.2) and a stopping criterion of ε s = 10%:
+−3x 1 + 12x 2 = 9
+10x 1 − 2x 2 = 8
+Solution. First rearrange the equations so that they are diagonally dominant and solve the
+first equation for x 1 and the second for x 2 :
+x 1 = (8 + 2x 2)/10 = 0.8 + 0.2x 2
+x 2 = (9 + 3x 1)/12 = 0.75 + 0.25x 1
+First iteration: Using initial guesses of x 1 = x 2 = 0, we can solve for x 1 :
+x 1 = 0.8 + 0.2(0) = 0.8
+Before solving for x 2 , we first apply relaxation to our result for x 1 :
+x 1,r = 1.2(0.8) − 0.2(0) = 0.96
+We use the subscript r to indicate that this is the “relaxed” value. This result is then used to
+compute x 2 :
+x 2 = 0.75 + 0.25(0.96) = 0.99
+We then apply relaxation to this result to give
+x 2,r = 1.2(0.99) − 0.2(0) = 1.188
+At this point, we could compute estimated errors with Eq. (12.2). However, since we
+started with assumed values of zero, the errors for both variables will be 100%.
+Second iteration: Using the same procedure as for the first iteration, the second iteration
+yields
+x 1 = 0.8 + 0.2(1.188) = 1.0376
+x 1,r = 1.2(1.0376) − 0.2(0.96) = 1.05312
+ε a,1 = | (1.05312 − 0.96)/1.05312 | × 100% = 8.84%
+x 2 = 0.75 + 0.25(1.05312) = 1.01328
+x 2,r = 1.2(1.01328) − 0.2(1.188) = 0.978336
+ε a,2 = | (0.978336 − 1.188)/0.978336 | × 100% = 21.43%
+Because we have now have nonzero values from the first iteration, we can compute ap-
+proximate error estimates as each new value is computed. At this point, although the error
+estimate for the first unknown has fallen below the 10% stopping criterion, the second has
+not. Hence, we must implement another iteration.
+Third iteration:
+x 1 = 0.8 + 0.2(0.978336) = 0.995667
+x 1,r = 1.2(0.995667) − 0.2(1.05312) = 0.984177
+ε a,1 = | (0.984177 − 1.05312)/0.984177 | × 100% = 7.01%
+x 2 = 0.75 + 0.25(0.984177) = 0.996044
+x 2,r = 1.2(0.996044) − 0.2(0.978336) = 0.999586
+ε a,2 = | (0.999586 − 0.978336)/0.999586 | × 100% = 2.13%
+At this point, we can terminate the computation because both error estimates have fallen
+below the 10% stopping criterion. The results at this juncture, x 1 = 0.984177 and
+x 2 = 0.999586, are converging on the exact solution of x 1 = x 2 = 1.
+
+12.3 Successive Substitution for a Nonlinear System
+Problem Statement. Use successive substitution to determine the roots of Eq. (12.6).
+Note that a correct pair of roots is x 1 = 2 and x 2 = 3. Initiate the computation with guesses
+of x 1 = 1.5 and x 2 = 3.5.
+Solution. Equation (12.6a) can be solved for
+x 1 = (10 − x 1 2)/x 2
+and Eq. (12.6b) can be solved for
+x 2 = 57 − 3x 1 x^2 2
+On the basis of the initial guesses, Eq. (E12.3.1) can be used to determine a new value
+of x 1 :
+x 1 = (10 − (1.5)^2)/3.5 = 2.21429
+Thus, the approach seems to be diverging. This behavior is even more pronounced on the
+second iteration:
+x 1 = (10 − (2.21429)^2)/−24.37516 = −0.20910
+x 2 = 57 − 3(−0.20910)(−24.37516) 2 = 429.709
+Obviously, the approach is deteriorating.
+Now we will repeat the computation but with the original equations set up in a differ-
+ent format. For example, an alternative solution of Eq. (12.6a) is
+x 1 = √(10 − x 1 x 2)
+and of Eq. (12.6b) is
+x 2 = √((57 − x 2)/3x 1)
+Now the results are more satisfactory:
+x 1 = √(10 − 1.5(3.5)) = 2.17945
+x 2 = √((57 − 3.5)/3(2.17945)) = 2.86051
+x 1 = √(10 − 2.17945(2.86051)) = 1.94053
+x 2 = √((57 − 2.86051)/3(1.94053)) = 3.04955
+Thus, the approach is converging on the true values of x 1 = 2 and x 2 = 3.
+
+12.4 Newton-Raphson for a Nonlinear System
+Problem Statement. Use the multiple-equation Newton-Raphson method to determine
+roots of Eq. (12.6). Initiate the computation with guesses of x 1 = 1.5 and x 2 = 3.5.
+Solution. First compute the partial derivatives and evaluate them at the initial guesses of
+x and y:
+∂ f 1,0 / ∂ x 1 = 2x 1 + x 2 = 2(1.5) + 3.5 = 6.5		∂ f 1,0 / ∂ x 2 = x 1 = 1.5
+∂ f 2,0 / ∂ x 1 = 3x^2 2 = 3(3.5)^2 = 36.75				∂ f 2,0 / ∂ x 2 = 1 + 6x 1 x 2 = 1 + 6(1.5)(3.5) = 32.5
+Thus, the determinant of the Jacobian for the first iteration is
+6.5(32.5) − 1.5(36.75) = 156.125
+The values of the functions can be evaluated at the initial guesses as
+f 1,0 = (1.5)^2 + 1.5(3.5) − 10 = −2.5
+f 2,0 = 3.5 + 3(1.5)(3.5)^2 − 57 = 1.625
+These values can be substituted into Eq. (12.12) to give
+x 1 = 1.5 − (−2.5(32.5) − 1.625(1.5))/156.125 = 2.03603
+x 2 = 3.5 − (1.625(6.5) − (−2.5)(36.75))/156.125 = 2.84388
+Thus, the results are converging to the true values of x 1 = 2 and x 2 = 3. The computation
+can be repeated until an acceptable accuracy is obtained.
+
